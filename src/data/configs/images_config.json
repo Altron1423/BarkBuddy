@@ -1,0 +1,10 @@
+{
+  "type": "image",
+  "images": {
+    "test_name1": "C:\\Users\\Altron\\PycharmProjects\\MMO_project\\src\\av2.png",
+    "img_find": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_find.png",
+    "img_lap": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_lap.png",
+    "img_setting": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_setting.png",
+    "img_filter": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_filter.png"
+  }
+}

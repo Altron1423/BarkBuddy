@@ -1,0 +1,157 @@
+{
+  "type": "ManyPolygonizer",
+  "many_polygonizers": {
+    "main_polygonizers": {
+      "polygons": [
+        {
+          "type": 1,
+          "position": [
+            0,
+            0
+          ],
+          "percent_size": [
+            1,
+            1
+          ],
+          "styleName": "base_back_ground"
+        },
+        {
+          "type": 1,
+          "percent_position": [
+            0,
+            0.7
+          ],
+          "percent_size": [
+            1,
+            0.3
+          ],
+          "styleName": "base_block"
+        },
+        {
+          "type": 3,
+          "position": [
+            0,
+            0
+          ],
+          "percent_size": [
+            1,
+            0.7
+          ],
+          "pngName": "test_name1"
+        },
+        {
+          "type": 2,
+          "position": [
+            20,
+            0
+          ]
+        },
+        {
+          "type": 1,
+          "position": [
+            0,
+            0
+          ],
+          "percent_size": [
+            1,
+            1
+          ],
+          "styleName": "base_border",
+          "border": 5
+        }
+      ],
+      "size": [
+        10,
+        10
+      ]
+    },
+    "speed_move": {
+      "polygons": [
+        {
+          "type": 1,
+          "position": [
+            0,
+            0
+          ],
+          "percent_size": [
+            1,
+            1
+          ],
+          "styleName": "speed_move"
+        },
+        {
+          "type": 3,
+          "percent_position": [
+            0.25,
+            0.1
+          ],
+          "percent_size": [
+            0.5,
+            0.5
+          ],
+          "pngName": "test_name1"
+        },
+        {
+          "type": 2,
+          "styleName": "speed_move",
+          "percent_position": [
+            0.1,
+            0.6
+          ]
+        }
+      ],
+      "size": [
+        10,
+        10
+      ]
+    },
+    "finde_line": {
+      "polygons": [
+        {
+          "type": 1,
+          "position": [
+            0,
+            0
+          ],
+          "percent_size": [
+            1,
+            1
+          ],
+          "styleName": "finde_line"
+        },
+        {
+          "type": 3,
+          "percent_position": [
+            0.15,
+            0.15
+          ],
+          "percent_size": [
+            0.7,
+            0.7
+          ],
+          "pngName": null
+        },
+        {
+          "type": 2,
+          "styleName": "finde_line",
+          "percent_position": [
+            null,
+            0.15
+          ]
+        },
+        {
+          "type": 2,
+          "styleName": "finde_line2",
+          "percent_position": [
+            null,
+            0.44
+          ]
+        }
+      ],
+      "size": [
+        10,
+        10
+      ]
+    }
+  }
+}
