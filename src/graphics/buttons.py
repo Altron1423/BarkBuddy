@@ -3,6 +3,7 @@ import time
 import pygame as pg
 
 from src.graphics.polygons import Resizer, ManyPolygonizer
+from src.data.loaders import ImageLoader
 # import math
 
 from src.data.Loger import log, log_step
@@ -107,7 +108,14 @@ class Button(Resizer):
         self.active = False
         self.active_time = False
         self.active_delta = 0.1
+        self.description = ""
+        self.parameters = {}
 
+    def set_parameters(self, name, parameters):
+        self.parameters[name] = parameters
+
+    def get_parameters(self, name):
+        return self.parameters.get(name)
 
     def set_type(self, type_but: str):
         self.type = type_but
@@ -141,10 +149,20 @@ class Button(Resizer):
                     self.polygons.polygons[i2].set_text(text[i])
                     i += 1
                 i2 += 1
-
+        self.polygons._redraw()
 
     def set_png(self, png):
-        self.png.set_png(png)
+        if type(png) == list:
+            i = i2 = 0
+            while i < len(png) and i2 < len(self.polygons.polygons):
+                if self.polygons.polygons[i2].type == 3:
+                    self.polygons.polygons[i2].set_png(ImageLoader.get_image(png[i]))
+                    i += 1
+                i2 += 1
+        elif type(png) == str:
+            self.png.set_png(ImageLoader.get_image(png))
+        self.polygons._redraw()
+
 
     def set_percent_size(self, percent_size_x: float | None = None, percent_size_y: float | None = None):
         super().set_percent_size(percent_size_x, percent_size_y)
@@ -185,7 +203,7 @@ class Button(Resizer):
             mouse_position[0] - self.position[0],
             mouse_position[1] - self.position[1]
         )
-        if self.on:
+        if self.on and self.type != "txt":
             if self.form == "rect":
                 active = (
                         0 <= mouse_position_on_button[0] <= self.size[0] and
@@ -225,6 +243,9 @@ class Button(Resizer):
 
     def draw(self, surface, activ):
         if self.visible:
+            # if self.type == "txt":
+            #     status = 4
+            # el
             if not self.on:
                 status = 1
             elif self.active:
@@ -305,6 +326,7 @@ class ButtonManager:
     def add_text(self, text, position):
         button = self._create_button()
         button.set_type("txt")
+        # log(text)
         button.set_text(text)
         button._set_p_s(position)
         # button.move_to(position[:2])
@@ -366,6 +388,10 @@ class ButtonManager:
     def draw(self):
         if self.surface is not None:
             mouse_pos = self.mouse.get_position(self.address)
+            if 0 <= mouse_pos[0] <= self.surface.get_size()[0] and 0 <= mouse_pos[1] <= self.surface.get_size()[1]:
+                pass
+            else:
+                mouse_pos = [-1000, 1000]
             self.active_button = self.testing_activ(mouse_pos)
             self.mouse.add_button(self.get_button(self.active_button))
             for i, butt in enumerate(self._buttons):

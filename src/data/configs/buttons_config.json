@@ -1,54 +1,40 @@
 {
   "type": "buttons",
   "windows": {
-    "main_menu": {
+    "pet_feed": {
       "data": {
         "window_position": [0, 0],
-        "window_size": [800, 900],
-        "window_percent_position": null,
-        "window_percent_size": null,
+        "window_percent_position": [0, 0.1],
+        "window_percent_size": [1, 0.8],
+        "window_background": [230, 230, 230],
+        "cord_new_but": [0.03, 0.01, 0.04, 0.02, 0.45, 0.3],
+        "default_polygonizer": "pet_feed"
+      },
+      "buttons": []
+    },
+    "detailed_information": {
+      "data": {
+        "window_percent_position": [0, 0.26],
+        "window_percent_size": [1, 0.64],
         "window_background": [230, 230, 230],
         "cord_new_but": [0,0, 0,0, 0,0],
-        "default_polygonizer": "base_polygonizer"
+        "default_polygonizer": "pet_feed"
       },
       "buttons": [
-      ]
-    },
-    "single_saves": {
-      "data": {
-        "window_position": [0, 0],
-        "window_size": [1.0, 70],
-        "window_background": null,
-        "cord_new_but": [150,170, null,30, 450,150],
-        "default_polygonizer": "base_polygonizer"
-      },
-      "buttons": [
-        ["button", "\u041d\u0430\u0447\u0430\u0442\u044c", "move_window:main_menu", [552, 811, 236, 76], "main_polygonizers"],
-        ["button", "\u041d\u0430\u0437\u0430\u0434", "move_window:main_menu", [2, 820, 213, 75], "main_polygonizers"]
-      ]
-    },
-    "online_servers": {
-      "data": {
-        "window_position": [0, 0],
-        "window_size": [1.0, 70],
-        "window_background": null,
-        "cord_new_but": [150,170, null,30, 450,150],
-        "default_polygonizer": "base_polygonizer"
-      },
-      "buttons": [
-        ["button", "\u041d\u0430\u0437\u0430\u0434", "move_window:main_menu", [200, 220, 200, 70], "main_polygonizers"]
+        ["txt", null, null, [0.025, 0.02, 0.95, 0.3], "description", null],
+        ["txt", null, null, [0.025, 0.34, 0.4625, 0.3], "parameters", null],
+        ["txt", null, null, [0.5125, 0.34, 0.4625, 0.3], "tags", null]
       ]
     },
     "settings": {
       "data": {
         "window_position": [0, 0],
-        "window_size": [1.0, 70],
-        "window_background": null,
+        "window_background": [230, 230, 230],
         "cord_new_but": [0,0, 0,0, 0,0],
         "default_polygonizer": "base_polygonizer"
       },
       "buttons": [
-        ["button", "\u041d\u0430\u0437\u0430\u0434", "move_window:main_menu", [200, 220, 200, 70], "main_polygonizers"]
+        ["button_png", "Питомцы", "move_window:pet_feed", [40, 0.4, 0.33, 0.3], "speed_move", null, "img_find"]
       ]
     },
     "speed_move": {
@@ -60,22 +46,33 @@
         "default_polygonizer": "base_polygonizer"
       },
       "buttons": [
-        ["button_png", "  Питомцы", "move_window:main_menu", [1, 1, 0.33, 1.0], "speed_move", "img_find"],
-        ["button_png", "    Поиск", "move_window:main_menu", [0.33, 1, 0.33, 1.0], "speed_move", "img_lap"],
-        ["button_png", " Настройки", "move_window:main_menu", [0.66, 1, 0.34, 1.0], "speed_move", "img_setting"]
+        ["button_png", "  Питомцы", "run_function:sistem/open_pet_feed", [1, 1, 0.33, 1.0], "speed_move", null, "img_find"],
+        ["button_png", "    Поиск", "run_function:sistem/open_pet_feed", [0.33, 1, 0.33, 1.0], "speed_move", null, "img_lap"],
+        ["button_png", " Настройки", "run_function:sistem/open_settings", [0.66, 1, 0.34, 1.0], "speed_move", null, "img_setting"]
       ]
     },
     "find_line": {
       "data": {
-        "window_percent_position": [0, 0],
         "window_percent_size": [1.0, 0.1],
         "window_background": [255, 255, 255],
         "cord_new_but": [0, 0, 0, 0, 0, 0],
         "default_polygonizer": "base_polygonizer"
       },
       "buttons": [
-        ["button_png", null, "move_window:main_menu", [1, 0.1, 0.12, 1.0], "finde_line", "img_filter"],
-        ["button_png", ["Поиск", "Найди друга"], "move_window:main_menu", [0.13, 0.1, 0.33, 1.0], "finde_line", null]
+        ["button_png", null, "move_window:pet_feed", [1, 0.1, 0.12, 1.0], "finde_line", null, "img_filter"],
+        ["button_png", ["Поиск", "Найди друга"], "move_window:pet_feed", [0.13, 0.1, 0.33, 1.0], "finde_line", null, null]
+      ]
+    },
+    "head_info": {
+      "data": {
+        "window_percent_size": [1.0, 0.26],
+        "window_background": [255, 255, 255],
+        "cord_new_but": [0,0, 0,0, 0,0],
+        "default_polygonizer": "base_polygonizer"
+      },
+      "buttons": [
+        ["png", null, null, [1, 1, 1.0, 1.0], "head_info", null, "img_pet1"],
+        ["button_png", null, "run_function:sistem/open_pet_feed", [15, 15, 60, 60], "head_info", null, "img_back"]
       ]
     }
   }

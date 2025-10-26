@@ -2,9 +2,16 @@
   "type": "image",
   "images": {
     "test_name1": "C:\\Users\\Altron\\PycharmProjects\\MMO_project\\src\\av2.png",
-    "img_find": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_find.png",
-    "img_lap": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_lap.png",
-    "img_setting": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_setting.png",
-    "img_filter": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_filter.png"
+    "img_find": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\search.png",
+    "img_lap": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\paw.png",
+    "img_setting": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\settings.png",
+    "img_filter": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\filter.png",
+    "img_pet1": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_pet1.png",
+    "img_pet2": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_pet2.png",
+    "img_pet3": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_pet3.png",
+    "img_pet4": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\img_pet4.png",
+    "img_female": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\fem.png",
+    "img_male": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\male.png",
+    "img_back": "D:\\JetBrains\\project\\PycharmProjects\\BarkBuddy\\src\\images\\back.png"
   }
 }

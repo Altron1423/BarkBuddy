@@ -29,6 +29,8 @@ class Resizer:
             if self.percent_use[3]:
                 self.size[1] = int(self.surface_size[1] * self.percent_size[1])
 
+        # if str(type(self)) == "<class 'src.graphics.polygons.DoterPolygon'>":
+        #     log(self, self.size)
 
     def set_surface_size(self, surface_size):
         self.surface_size = surface_size
@@ -113,7 +115,8 @@ class Polygon(Resizer):
 
     def set_text(self, text:str):
         self.text = text
-        self.option_surfaces = self.styler.text_render(self.text)
+        # self.option_surfaces = self.styler.text_render(self.text)
+        self.blit_text()
 
     def set_png(self, png):
         self.png = png
@@ -122,14 +125,17 @@ class Polygon(Resizer):
     def resize(self, new_size):
         super().resize(new_size)
         self._resize_png()
+        self.blit_text()
 
     def set_percent_size(self, percent_size_x: float | None = None, percent_size_y: float | None = None):
         super().set_percent_size(percent_size_x, percent_size_y)
         self._resize_png()
+        self.blit_text()
 
     def set_surface_size(self, surface_size):
         super().set_surface_size(surface_size)
         self._resize_png()
+        self.blit_text()
 
     def __copy__(self):
         dp = DoterPolygon(self)
@@ -161,6 +167,31 @@ class Polygon(Resizer):
         if not isinstance(self, DoterPolygon):
             self.id = Polygon.id
             Polygon.id += 1
+
+    def blit_text(self):
+        if self.surface_size is None:
+            return
+        surface = pg.Surface(self.surface_size, pg.SRCALPHA, 32)
+        if self.text is not None:
+            words = [word.split(' ') for word in self.text.splitlines()]
+            space = self.styler.font.size(' ')[0]
+            max_width, max_height = self.surface_size[0] - 10, self.surface_size[1] - 10
+            x = y = 0
+            for line in words:
+                for word in line:
+                    if word != "":
+                        word_surface = self.styler.text_render(word)
+                        word_width, word_height = word_surface.get_size()
+                        if x + word_width >= max_width:
+                            x = 0
+                            y += word_height
+                        surface.blit(word_surface, (x, y))
+                        x += word_width + space
+                    else:
+                        x += space
+                x = 0
+                y += word_height
+        self.option_surfaces = surface
 
 
     @classmethod
@@ -262,10 +293,8 @@ class ManyPolygonizer(Resizer):
     def set_surface_size(self, size):
         super().set_surface_size(size)
         super().resize(size)
-        # log(size)
         for polygon in self.polygons:
             polygon.set_surface_size(size)
-            # log(polygon.__dict__)
 
         self._redraw()
 

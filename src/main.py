@@ -20,9 +20,10 @@ class Game:
 
         self._create_functions_dict()
 
+        self.load_pet_feed()
+
         status("Game init complete")
         log_step(2)
-
 
     def run(self):
         status("Game start")
@@ -41,8 +42,10 @@ class Game:
         self.tick = 0
         self.path = Path.cwd()
         self.WORK = True
+        self.pets = {}
+        self.select_pet = None
 
-        with self.path.joinpath(f"data/configs/core.json").open("r") as f:
+        with self.path.joinpath("data/configs/core.json").open("r") as f:
             self.core = json.load(f)
         self.version = list(map(int, self.core["version"].split(".")))
 
@@ -52,7 +55,9 @@ class Game:
     def _create_functions_dict(self):
         sist = {
             "exit": [self.exit, None],
-            "single_saves": [self.open_single_saves, None]
+            "open_pet_info": [self.open_pet_info, None],
+            "open_pet_feed": [self.open_pet_feed, None],
+            "open_settings": [self.open_settings, None]
         }
         self.function_rans = {"sistem": sist, "mods": {}}
 
@@ -72,10 +77,71 @@ class Game:
         else:
             return {"result": False, "error": [3, f"uncorrect passw"]}
 
-    def open_single_saves(self):
-        self.gameSession.open_single_saves()
-        self.main_screen.window_manager.set_main_window("single_saves")
+    def load_pet_feed(self):
+        with self.path.joinpath("db.json").open("r", encoding="utf-8") as file:
+            self.pets = json.load(file)["pets"]
 
+        mb = self.main_screen.window_manager.get_window("pet_feed")
+        config = []
+        x, y, dx, dy, sx, sy = mb.cord_new_but
+        for i, ipet in enumerate(self.pets):
+            pet = self.pets[ipet]
+            config.append([
+                "button_png",
+                f"{pet['name']}, {pet['age']}",
+                "run_function:sistem/open_pet_info",
+                [
+                    x + (dx + sx) * (i % 2),
+                    y + (dy + sy) * (i // 2),
+                    sx, sy
+                ],
+                "pet_feed",
+                {
+                    "pet_name": ipet
+                },
+                [
+                    pet['image'][0],
+                    "img_female" if pet['parameters']['gender'] == "Девочка" else "img_male"
+                ]
+            ])
+            # log(config[-1])
+        mb._menu_load({"buttons": config})
+
+    def gen_params(self, params):
+        st_param = ["Пол:", "Порода:", "Рост:", "Вес:", "Окрас:"]
+        for key, value in params.items():
+            st_param.append(value)
+
+        return st_param
+
+    def open_pet_info(self, data):
+        self.select_pet = self.pets[data.get_parameters("pet_name")]
+        pet = self.select_pet
+        wm = self.main_screen.window_manager
+        bm = wm.get_window("head_info").button_manager
+        bm._buttons[0].set_png(pet["image"][1])
+        bm._buttons[0].set_text(f"{pet['name']}, {pet['age']}")
+
+        bm = wm.get_window("detailed_information").button_manager
+        bm._buttons[0].set_text(pet["descr"])
+        bm._buttons[1].set_text(self.gen_params(pet["parameters"]))
+        bm._buttons[2].set_text(pet["tags"])
+
+        wm.close_window("find_line")
+        wm.open_window("head_info")
+        wm.set_main_window("detailed_information")
+
+    def open_settings(self, data):
+        wm = self.main_screen.window_manager
+        wm.close_window("find_line")
+        wm.set_main_window("settings")
+
+    def open_pet_feed(self, data):
+        wm = self.main_screen.window_manager
+        wm.close_window()
+        wm.open_window("find_line")
+        wm.open_window("speed_move")
+        wm.set_main_window("pet_feed")
 
 
 if __name__ == "__main__":

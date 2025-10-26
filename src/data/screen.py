@@ -16,7 +16,7 @@ class MainScreen:
         self.screen_main = pg.Surface(self.screenSize)
         self.mouse = Mouse(pg.mouse)
         # self.menu = buttons.ButtonManager()
-        self.window_manager = WindowManager(self)
+        self.window_manager:WindowManager = WindowManager(self)
 
         status("MainScreen init complete")
 
@@ -92,13 +92,13 @@ class WindowManager:
     def __init__(self, main_screen:MainScreen):
         self.main_screen:MainScreen = main_screen
         self.windows:list[Window] = []
-        self.windows_keys = {}
+        self.windows_keys:dict[str: Window] = {}
         self.load_windows()
-        self.mainWindow:Window = self.windows[0]
+        self.mainWindow:Window = self.get_window("pet_feed")
 
-        self.visible = []
-        self.visible.append(self.windows[self.windows_keys["speed_move"]])
-        self.visible.append(self.windows[self.windows_keys["find_line"]])
+        self.visible:list[Window] = []
+        self.open_window("speed_move")
+        self.open_window("find_line")
 
         status("WindowManager init complete")
 
@@ -124,6 +124,9 @@ class WindowManager:
 
         status(f"Load {len(self.windows)} windows")
 
+    def get_window(self, name):
+        return self.windows[self.windows_keys[name]]
+
     def draw(self):
         # log(self.main_screen.mouse.get_position())
         # self.mainWindow.button_manager.draw()
@@ -132,20 +135,21 @@ class WindowManager:
             window.draw(self.main_screen.screen_main)
 
     def keyPress(self, key, type):
-        self.mainWindow.menu.keyPress(key, type)
+        # self.mainWindow.button_manager.keyPress(key, type)
         pass
 
     def select(self, button):
         self.mainWindow.button_manager.select(button)
-        pass
+        for window in self.visible:
+            window.button_manager.select(button)
 
-    def genegate_function(self, data) -> buttons.TriggerGen:
+    def genegate_function(self, data, button) -> buttons.TriggerGen:
         data = data.split(":")
         trigger = buttons.TriggerGen()
         if data[0] == "move_window":
             trigger.LMU(lambda x: self.set_main_window(data[1]))
         elif data[0] == "run_function":
-            trigger.LMU(lambda x: self.run_function(data[1]))
+            trigger.LMU(lambda x: self.run_function(data[1], button))
         return trigger
 
     def set_main_window(self, window):
@@ -153,13 +157,25 @@ class WindowManager:
         self.mainWindow = self.windows[self.windows_keys[window]]
         log(f"Move to '{window}' window")
 
-    def run_function(self, data):
+    def run_function(self, data, button):
         data = data.split("/")
         result = self.main_screen.GAME.give_function(data)
         if result["result"]:
-            result["function"]()
+            result["function"](button)
         else:
             print(result["error"])
+
+    def close_window(self, window=None):
+        if window is None:
+            self.visible = []
+        else:
+            win = self.get_window(window)
+            if win is not None:
+                if win in self.visible:
+                    self.visible.remove(win)
+
+    def open_window(self, window):
+        self.visible.append(self.windows[self.windows_keys[window]])
 
     def _append_buttons(self, buttons, screen:str):
         window = self.windows[self.windows_keys[screen]]
@@ -186,22 +202,21 @@ class Window(Resizer):
 
         self.gen_but = []
 
-        status(f"Window '{name}' init complete")
+        status(f"Window '{name}' init complete whis {len(self.button_manager._buttons)}")
 
     def _load_surface(self, config:dict, main_surface):
 
         position = config["data"].get("window_position", [0, 0])
-        size = config["data"].get("window_size", [10, 10])
-
+        size = config["data"].get("window_size", main_surface.get_size())
         super().__init__(position, size)
 
         self.set_surface_size(main_surface.get_size())
 
-        position = config["data"].get("window_percent_position", [0, 0])
+        position = config["data"].get("window_percent_position")
         if position is not None:
             self.set_percent_position(*position)
 
-        size = config["data"].get("window_percent_size", [0.1, 0.1])
+        size = config["data"].get("window_percent_size")
         if size is not None:
             self.set_percent_size(*size)
 
@@ -220,13 +235,25 @@ class Window(Resizer):
                 self.button_manager.set_polygonizer(polygons)
 
             if i_button[0] == "button":
-                trigger = self.manager.genegate_function(i_button[2])
-                self.button_manager.add_button(i_button[1], i_button[3], trigger)
+                button = self.button_manager.add_button(i_button[1], i_button[3], None)
+                trigger = self.manager.genegate_function(i_button[2], button)
+                button.set_triggers(trigger)
             elif i_button[0] == "button_png":
-                trigger = self.manager.genegate_function(i_button[2])
-                png = ImageLoader.get_image(i_button[5])
-                button = self.button_manager.add_png_but(i_button[3], trigger, png)
+                button = self.button_manager.add_png_but(i_button[3], None, i_button[6])
+                trigger = self.manager.genegate_function(i_button[2], button)
+                button.set_triggers(trigger)
                 button.set_text(i_button[1])
+            elif i_button[0] == "png":
+                button = self.button_manager.add_png(i_button[3], i_button[6])
+                button.set_text(i_button[1])
+            elif i_button[0] == "txt":
+                button = self.button_manager.add_text(i_button[1], i_button[3])
+            else:
+                continue
+
+            if i_button[5] is not None:
+                for key, value in i_button[5].items():
+                    button.set_parameters(key, value)
 
 
     def move_new_button(self):
