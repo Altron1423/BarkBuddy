@@ -13,7 +13,7 @@ project_name = "MiGame"
 
 class Loger:
     def __init__(self, consol_loging=True, file_loging=True, loging=True):
-        self.path = pathlib.Path.cwd().joinpath("data/configs")
+        self.path = pathlib.Path.cwd()
 
         self.off_log_file = [
             # r'\data\GameSession.py'
@@ -35,7 +35,7 @@ class Loger:
         self.pass_str()
 
     def _load(self):
-        with self.path.joinpath("logs_config.json").open("r") as file:
+        with self.path.joinpath("data/configs/logs_config.json").open("r") as file:
             data = load(file)
 
         if data["last_date"] == str(Date.today()):
@@ -45,10 +45,10 @@ class Loger:
             data['count'] = 1
         self.name = f"log_{Date.today().strftime('%Y_%m_%d')}_{data['count']}.txt"
 
-        with self.path.joinpath("data_logs.json").open("w") as file:
+        with self.path.joinpath("data/configs/logs_config.json").open("w") as file:
             dump(data, file)
 
-        self.path = self.path.joinpath(self.name)
+        self.path = self.path.joinpath("logs").joinpath(self.name)
         with self.path.open(mode="w+", encoding="utf-8") as f:
             pass
 
