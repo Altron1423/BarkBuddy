@@ -82,12 +82,12 @@
         {
           "type": 3,
           "percent_position": [
-            0.25,
+            0.35,
             0.1
           ],
-          "percent_size": [
-            0.5,
-            0.5
+          "size": [
+            50,
+            50
           ],
           "pngName": "test_name1"
         },
@@ -105,7 +105,7 @@
         10
       ]
     },
-    "finde_line": {
+    "find_line": {
       "polygons": [
         {
           "type": 1,
@@ -117,7 +117,7 @@
             1,
             1
           ],
-          "styleName": "finde_line"
+          "styleName": "find_line"
         },
         {
           "type": 3,
@@ -133,7 +133,7 @@
         },
         {
           "type": 2,
-          "styleName": "finde_line",
+          "styleName": "find_line",
           "percent_position": [
             null,
             0.15
@@ -141,7 +141,7 @@
         },
         {
           "type": 2,
-          "styleName": "finde_line2",
+          "styleName": "find_line2",
           "percent_position": [
             null,
             0.44
@@ -191,7 +191,7 @@
           "type": 2,
           "styleName": "pet_feed",
           "percent_position": [
-            null,
+            0.1,
             0.8
           ]
         }
@@ -213,9 +213,9 @@
         },
         {
           "type": 2,
-          "styleName": "pet_feed",
+          "styleName": "head_info",
           "percent_position": [
-            null,
+            0.1,
             0.8
           ]
         }
@@ -240,6 +240,64 @@
           "styleName": "description",
           "percent_position": [0.02, 0.02],
           "percent_size": [0.96, 0.96]
+        }
+      ],
+      "size": [
+        10,
+        10
+      ]
+    },
+    "pet_contact": {
+      "polygons": [
+        {
+          "type": 1,
+          "percent_size": [1.0, 1.0],
+          "styleName": "description"
+        },
+        {
+          "type": 2,
+          "styleName": "bold_description",
+          "percent_position": [0.02, 0.04],
+          "percent_size": [0.6, 0.1]
+        },
+        {
+          "type": 2,
+          "styleName": "description",
+          "percent_position": [0.03, 0.35],
+          "percent_size": [0.96, 0.96]
+        },
+        {
+          "type": 2,
+          "styleName": "description",
+          "percent_position": [0.02, 0.68],
+          "percent_size": [0.96, 0.96]
+        }
+      ],
+      "size": [
+        10,
+        10
+      ]
+    },
+    "get_pet": {
+      "polygons": [
+        {
+          "type": 1,
+          "percent_size": [1.0, 1.0],
+          "styleName": "get_pet"
+        },
+        {
+          "type": 2,
+          "styleName": "get_pet",
+          "percent_position": [0.02, 0.04],
+          "percent_size": [0.6, 0.1]
+        },
+        {
+          "type": 3,
+          "percent_size": [
+            1.0,
+            1.0
+          ],
+          "pngName": null
         }
       ],
       "size": [

@@ -23,7 +23,10 @@
       "buttons": [
         ["txt", null, null, [0.025, 0.02, 0.95, 0.3], "description", null],
         ["txt", null, null, [0.025, 0.34, 0.4625, 0.3], "parameters", null],
-        ["txt", null, null, [0.5125, 0.34, 0.4625, 0.3], "tags", null]
+        ["txt", null, null, [0.5125, 0.34, 0.4625, 0.3], "tags", null],
+        ["txt", null, null, [0.025, 0.66, 0.95, 0.15], "pet_contact", null],
+        ["button", "Забрать питомца", "run_function:app/open_pet_feed", [0.025, 0.83, 0.78, 60], "get_pet", null],
+        ["button_png", null, "run_function:app/open_pet_feed", [0.83, 0.83, 60, 60], "get_pet", null, "img_share"]
       ]
     },
     "settings": {
@@ -46,9 +49,9 @@
         "default_polygonizer": "base_polygonizer"
       },
       "buttons": [
-        ["button_png", "  Питомцы", "run_function:sistem/open_pet_feed", [1, 1, 0.33, 1.0], "speed_move", null, "img_find"],
-        ["button_png", "    Поиск", "run_function:sistem/open_pet_feed", [0.33, 1, 0.33, 1.0], "speed_move", null, "img_lap"],
-        ["button_png", " Настройки", "run_function:sistem/open_settings", [0.66, 1, 0.34, 1.0], "speed_move", null, "img_setting"]
+        ["button_png", "  Питомцы", "run_function:app/open_pet_feed", [1, 1, 0.33, 1.0], "speed_move", null, "img_lap"],
+        ["button_png", "    Поиск", "run_function:app/open_pet_feed", [0.33, 1, 0.33, 1.0], "speed_move", null, "img_find"],
+        ["button_png", " Настройки", "run_function:app/open_settings", [0.66, 1, 0.34, 1.0], "speed_move", null, "img_setting"]
       ]
     },
     "find_line": {
@@ -59,8 +62,8 @@
         "default_polygonizer": "base_polygonizer"
       },
       "buttons": [
-        ["button_png", null, "move_window:pet_feed", [1, 0.1, 0.12, 1.0], "finde_line", null, "img_filter"],
-        ["button_png", ["Поиск", "Найди друга"], "move_window:pet_feed", [0.13, 0.1, 0.33, 1.0], "finde_line", null, null]
+        ["button_png", null, "move_window:pet_feed", [1, 0.1, 0.12, 1.0], "find_line", null, "img_filter"],
+        ["button_png", ["Поиск", "Найди друга"], "move_window:pet_feed", [0.13, 0.1, 0.33, 1.0], "find_line", null, null]
       ]
     },
     "head_info": {
@@ -72,7 +75,7 @@
       },
       "buttons": [
         ["png", null, null, [1, 1, 1.0, 1.0], "head_info", null, "img_pet1"],
-        ["button_png", null, "run_function:sistem/open_pet_feed", [15, 15, 60, 60], "head_info", null, "img_back"]
+        ["button_png", null, "run_function:app/open_pet_feed", [15, 15, 60, 60], "head_info", null, "img_back"]
       ]
     }
   }
