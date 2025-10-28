@@ -49,6 +49,6 @@ class Translator:
 
 if __name__ == "__main__":
     translator = Translator()
-
+    a = 3
     translator.load_from(Path.cwd().joinpath("Translator.py"), "test")
     print(translator.translation("self.dictionary[name]"))

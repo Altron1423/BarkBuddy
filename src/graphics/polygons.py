@@ -98,7 +98,13 @@ class Polygon(Resizer):
             pass
         elif self.type == 1:
             color = self._get_color(status)
-            pg.draw.rect(surface, color, option_rect, self.border)
+            if len(color) == 3:
+                pg.draw.rect(surface, color, option_rect, self.border)
+            else:
+                sr = pg.Surface(self.size)
+                sr.fill(color[:3])
+                sr.set_alpha(color[3])
+                surface.blit(sr, self.position)
 
         elif self.type == 2:
             if self.text is not None:

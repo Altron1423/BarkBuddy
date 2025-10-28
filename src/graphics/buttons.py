@@ -4,7 +4,7 @@ import pygame as pg
 
 from src.graphics.polygons import Resizer, ManyPolygonizer
 from src.data.loaders import ImageLoader
-# import math
+from src.data.Bars import Bars
 
 from src.data.Loger import log, log_step
 
@@ -46,7 +46,7 @@ class TriggerGen:
         return self
 
     def MWD(self, function):
-        self.triggers[(4, True)] = function
+        self.triggers[(4, False)] = function
         return self
 
     def MWU(self, function):
@@ -111,6 +111,8 @@ class Button(Resizer):
         self.description = ""
         self.parameters = {}
 
+        self.mvX = self.mvY = None
+
     def set_parameters(self, name, parameters):
         self.parameters[name] = parameters
 
@@ -163,6 +165,9 @@ class Button(Resizer):
             self.png.set_png(ImageLoader.get_image(png))
         self.polygons._redraw()
 
+    def set_mover(self, mvX: None|Bars, mvY: None|Bars):
+        self.mvX = mvX
+        self.mvY = mvY
 
     def set_percent_size(self, percent_size_x: float | None = None, percent_size_y: float | None = None):
         super().set_percent_size(percent_size_x, percent_size_y)
@@ -281,6 +286,9 @@ class ButtonManager:
         self.address: str = "main"
         self.surface: pg.Surface | None = None
         self.active_button: int | None = None
+        self.dinamX = Bars(0, 0, 0)
+        self.dinamY = Bars(0, 0, 0)
+
 
     def set_surface(self, surface):
         self.surface = surface
@@ -293,25 +301,12 @@ class ButtonManager:
     def set_polygonizer(self, polygonizer: ManyPolygonizer):
         self.last_polygonizer = polygonizer
 
-    def _create_button(self):
-        button = Button(self, len(self._buttons))
-        self._buttons.append(
-            button
-        )
+    def set_move_limit_x(self, lim):
+        self.dinamX.setLimit(lim)
 
-        if self.last_polygonizer is not None:
-            button.set_polygonizer(self.last_polygonizer)
-        else:
-            button.set_polygonizer(self.polygonizer)
+    def set_move_limit_y(self, lim):
+        self.dinamY.setLimit(lim)
 
-        if self.surface is not None:
-            # log(self.surface.get_size())
-            button.set_surface_size(self.surface.get_size())
-            # log_step()
-            # button.polygons.resize(button.size)
-
-
-        return button
 
     def add_button(self, text, position, triggers):
         button = self._create_button()
@@ -366,6 +361,30 @@ class ButtonManager:
 
         return button
 
+    def add_mower(self, position, moveX: None|Bars=None, moveY: None|Bars=None):
+        button = self._create_button()
+        button.set_type("mower")
+        button._set_p_s(position)
+        trigers = TriggerGen()
+
+        if moveX is not None:
+            mvX = moveX
+            trigers.MWD(lambda x: moveX.add(-0.05 * moveX.getFull()[1]))
+            trigers.MWU(lambda x: moveX.add(0.05 * moveX.getFull()[1]))
+        else:
+            mvX = None
+
+        if moveY is not None:
+            mvY = moveY
+            trigers.MWD(lambda x: moveY.add(-0.05 * moveY.getFull()[1]))
+            trigers.MWU(lambda x: moveY.add(0.05 * moveY.getFull()[1]))
+        else:
+            mvY = None
+
+        button.set_triggers(trigers)
+        button.set_mover(mvX, mvY)
+
+
     def get_button(self, index):
         if index is not None:
             return self._buttons[index]
@@ -378,13 +397,6 @@ class ButtonManager:
         if button is not None:
             button.select((but, up))
 
-    def testing_activ(self, mouse_pos):
-        last = None
-        for i, butt in enumerate(self._buttons):
-            if butt.test_active(mouse_pos):
-                last = i
-        return last
-
     def draw(self):
         if self.surface is not None:
             mouse_pos = self.mouse.get_position(self.address)
@@ -392,10 +404,38 @@ class ButtonManager:
                 pass
             else:
                 mouse_pos = [-1000, 1000]
-            self.active_button = self.testing_activ(mouse_pos)
+            self.active_button = self._testing_activ(mouse_pos)
             self.mouse.add_button(self.get_button(self.active_button))
             for i, butt in enumerate(self._buttons):
                 butt.draw(self.surface, self.active_button == i)
+
+    def _testing_activ(self, mouse_pos):
+        last = None
+        for i, butt in enumerate(self._buttons):
+            if butt.test_active(mouse_pos):
+                last = i
+        return last
+
+    def _create_button(self):
+        button = Button(self, len(self._buttons))
+        self._buttons.append(
+            button
+        )
+
+        if self.last_polygonizer is not None:
+            button.set_polygonizer(self.last_polygonizer)
+        else:
+            button.set_polygonizer(self.polygonizer)
+
+        if self.surface is not None:
+            # log(self.surface.get_size())
+            button.set_surface_size(self.surface.get_size())
+            # log_step()
+            # button.polygons.resize(button.size)
+
+
+        return button
+
 
 
 if __name__ == "__main__":
